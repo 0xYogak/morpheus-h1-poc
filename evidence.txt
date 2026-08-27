@@ -1,0 +1,143 @@
+Raw 'forge test -vv' output - Morpheus DistributorV2 emission-share capture PoC
+PoC sha256: fbc5a6496003adc8ecaa620395259bafad412869f255129fd4ee392e0874d7cf
+foundry.toml sha256: 683ba5f82d7a0f4a44b94af12b93a776ae4dd1f8bbdc474b6f226baef358e454
+Target: Distributor 0xDf1AC1AC255d91F5f4B1E3B4Aef57c5350F64C7A (impl 0x52f76e8be3dfabcc3b0ded02882a22be47dade03, version 2)
+Fork block 25837000, run 2026-08-27T04:48:57Z
+Command: MAINNET_RPC_URL=<eth-archive-rpc> forge test -vv
+========================================================================
+No files changed, compilation skipped
+
+Ran 8 tests for test/DonationShare.t.sol:DonationShareTest
+[PASS] test_atomicBundle_permanentLoss_realVictims() (gas: 2579780)
+Logs:
+  === ATOMIC + PERMANENT ===
+  named real stETH victims: 15
+  their total pending MOR at fork block (wei): 6637016926125972746733
+  control: victim cumulative claimable after 1 honest period (wei): 7050618242894492200853
+  control: victim cumulative claimable after 2 honest periods (wei): 7050618242894492200853
+  attack: victim cumulative claimable after 2 periods, attack only in P1 (wei): 6805395901330618371906
+  --- PERMANENT LOSS TO 15 NAMED VICTIMS (never restored in period 2) ---
+  honest cumulative (wei): 7050618242894492200853
+  post-attack cumulative (wei): 6805395901330618371906
+  permanent MOR taken from these victims (wei): 245222341563873828947
+
+[PASS] test_attackerNetPositive_singlePeriod() (gas: 2328208)
+Logs:
+  === ATTACKER NET-POSITIVE (single period, 10 WBTC stake, 0.01 WBTC donation) ===
+  control claimable MOR (wei): 6536142073350440423
+  attack claimable MOR (wei): 2493342273480921676779
+  extra MOR captured (wei): 2486806131407571236356
+  gross extra value (micro-USD): 5115360212
+  donation sunk cost (micro-USD): 788325823
+  attacker net (micro-USD): 4327034389
+
+[PASS] test_donationCapturesEmissionShare() (gas: 1302437)
+Logs:
+  === CONTROL (organic yield only) ===
+  stETH 3394729292425247636073 9400
+  wETH  3726664391957465642 10
+  wBTC  6311164477596405 0
+  USDC  194455934705040756986 538
+  USDT  18318084763205492115 50
+  control total emission distributed: 3611236287449928947221
+  attacker aWBTC balance: 99999999
+  === ATTACK (1.0 WBTC worth of aWBTC donated by unprivileged address) ===
+  stETH 57290287168326231411 158
+  wETH  62892105615493758 0
+  wBTC  3550292281448066828786 9831
+  USDC  3281686220369630189 9
+  USDT  309140507550763075 0
+  attack total emission distributed: 3611236287449928947219
+  --- IMPACT SUMMARY ---
+  wBTC slice control (MOR wei): 6311164477596405
+  wBTC slice attack  (MOR wei): 3550292281448066828786
+  emission redirected away from other pools (MOR wei): 3550285970283589232381
+
+[PASS] test_economicCalibrationAttack() (gas: 4116614)
+Logs:
+  === ECONOMIC CALIBRATION ATTACK ===
+  Control MOR (wei): 1131646433459372359
+  Attack MOR (wei): 7454719119016704576683
+  Total aWBTC donated (8dec): 17500000
+
+[PASS] test_fullAttackLifecycleValueCapture() (gas: 4082130)
+Logs:
+  === CONTROL: stake only (0.5 WBTC, 7 periods) ===
+  Claimable MOR (wei): 1131646433459372359
+  === ATTACK: stake + daily donation (0.5 WBTC stake, 1.0 WBTC donated as aWBTC) ===
+  Claimable MOR (wei): 7642182491549803392837
+  --- VALUE CAPTURE ---
+  Control reward (MOR wei): 1131646433459372359
+  Attack  reward (MOR wei): 7642182491549803392837
+  Multiplier: 6753
+  Extra MOR captured: 7641050845116344020478
+
+[PASS] test_noveltyControl_normalYieldDay_totalMintUnchanged() (gas: 1261999)
+Logs:
+  === NOVELTY CONTROL: organic day, no donation ===
+  pools credited: 5
+  total emission distributed: 3611236287449928947221
+  === NOVELTY CONTROL: same period, with donation ===
+  total emission distributed: 3611236287449928947219
+  --- DISTINCTION ---
+  extra emission minted (Low-01 axis): 2
+  wBTC share gain (H1 axis): 2141081845747579505033
+  stETH share loss (H1 axis): 2012719573931862559447
+
+[PASS] test_pinnedBlockNoWarpNoMock_shareDiversion() (gas: 1298410)
+Logs:
+  === PINNED BLOCK, NO WARP, NO MOCK ===
+  lastCalculatedTimestamp: 1787611175
+  minRewardsDistributePeriod: 86400
+  block.timestamp: 1787718551
+  elapsed: 107376
+  control total emission: 3611236287449928947221
+  stETH 3394729292425247636073 9400
+  wETH  3726664391957465642 10
+  wBTC  6311164477596405 0
+  USDC  194455934705040756986 538
+  USDT  18318084763205492115 50
+  attacker aWBTC donated: 2499999
+  attack total emission: 3611236287449928947219
+  stETH 1382009718493385076626 3826
+  wETH  1517142005620428748 4
+  wBTC  2141088156912057101438 5928
+  USDC  79163894505735212239 219
+  USDT  7457375533131128168 20
+  --- DIVERSION AT PINNED BLOCK ---
+  wBTC gain: 2141081845747579505033
+  stETH loss: 2012719573931862559447
+  USDC loss: 115292040199305544747
+  USDT loss: 10860709230074363947
+  wETH loss: 2209522386337036894
+
+[PASS] test_realStakersLoseClaimableMor() (gas: 1490425)
+Logs:
+  === CONTROL: honest distribution, MOR earned this period ===
+  155967811141944662
+  113633680041298708916
+  28882525545544056398
+  1947109347702068084
+  1043249911286733350
+  2370785397678572495
+  sum earned by the six stakers: 148033318054652083905
+  === ATTACK: same period after a 0.025 WBTC donation ===
+  63495204537006482
+  46260787425865334213
+  11758207373896013953
+  792677061908266501
+  424711778766193187
+  965157506775229786
+  sum earned by the six stakers: 60265036351748044122
+  --- LOSS TO REAL THIRD-PARTY STAKERS (one period, 6 sampled addresses) ---
+  92472606604938180
+  67372892615433374703
+  17124318171648042445
+  1154432285793801583
+  618538132520540163
+  1405627890903342709
+  total MOR taken from these six stakers: 87768281702904039783
+
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 338.98ms (251.64ms CPU time)
+
+Ran 1 test suite in 353.74ms (338.98ms CPU time): 8 tests passed, 0 failed, 0 skipped (8 total tests)
