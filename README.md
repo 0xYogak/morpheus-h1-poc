@@ -11,11 +11,11 @@ Foundry mainnet-fork proof of concept for a Morpheus Bug Bounty submission.
 | Chain | Ethereum mainnet |
 | Fork block | 25837000 (timestamp 1787718551) |
 
-## The bug
+## Root cause
 
 `distributeRewards` splits the fixed per-period MOR emission across the five deposit pools in
 proportion to each pool's measured yield, where yield is `balanceOf(yieldToken) - lastUnderlyingBalance`
-(`DistributorV2.sol:409-442`). The `yieldToken` is a freely transferable ERC20 — the Aave aToken for
+(`DistributorV2.sol:409-442`). The `yieldToken` is a freely transferable ERC20 the Aave aToken for
 AAVE-strategy pools, the deposit token otherwise. Any address can raise one pool's measured yield by
 transferring that token to the Distributor, which redirects the fixed emission toward that pool and
 away from every other pool's stakers. The total emission split is unchanged; only the distribution
